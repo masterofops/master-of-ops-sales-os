@@ -185,8 +185,12 @@ h1, h2, h3 {
 .stSelectbox div[data-baseweb="select"] {
     background: var(--surface) !important; border: 1px solid var(--border) !important;
 }
-.stSelectbox div[data-baseweb="select"] * { color: #000000 !important; }
-.stMultiSelect div[data-baseweb="select"] * { color: #000000 !important; }
+.stSelectbox div[data-baseweb="select"] * {
+    color: #000000 !important;
+}
+.stMultiSelect div[data-baseweb="select"] * {
+    color: #000000 !important;
+}
 
 .stMultiSelect div[data-baseweb="select"] * { color: var(--text) !important; }
 
@@ -802,7 +806,7 @@ def render_url_buttons(row):
     cols = st.columns(len(links))
     for i, (label, url) in enumerate(links):
         with cols[i]:
-            st.link_button(label, url, use_container_width=True)
+            st.link_button(label, url, width="stretch")
 
 
 def kpi_tile(val, label, cls="", sub=""):
@@ -881,19 +885,19 @@ smtp_password = "your-password"</pre>"""),
     with c1:
         st.markdown("**Bootstrap Sheets**")
         st.caption("Writes correct headers to both sheets.")
-        if st.button("🚀 BOOTSTRAP", use_container_width=True, key="btn_bootstrap"):
+        if st.button("🚀 BOOTSTRAP", width="stretch", key="btn_bootstrap"):
             ok, msg = bootstrap_sheets()
             (st.success if ok else st.error)(msg)
     with c2:
         st.markdown("**Seed Demo Data**")
         st.caption("8 leads + activity records for dashboard testing.")
-        if st.button("🧪 SEED DEMO", use_container_width=True, key="btn_seed"):
+        if st.button("🧪 SEED DEMO", width="stretch", key="btn_seed"):
             ok, msg = seed_demo_data()
             (st.success if ok else st.error)(msg)
     with c3:
         st.markdown("**Test Connection**")
         st.caption("Confirms read/write is working.")
-        if st.button("🔌 TEST", use_container_width=True, key="btn_test"):
+        if st.button("🔌 TEST", width="stretch", key="btn_test"):
             df = load_leads()
             if df is not None:
                 st.success(f"Connected ✓ — {len(df)} leads found.")
@@ -952,7 +956,7 @@ def tab_dial_queue():
 
     # ── Session gate ──────────────────────────────────────────
     if not st.session_state.dial_session:
-        if st.button("▶  START AUTO DIAL SESSION", use_container_width=True, key="btn_start_session"):
+        if st.button("▶  START AUTO DIAL SESSION", width="stretch", key="btn_start_session"):
             st.session_state.dial_session     = True
             st.session_state.active_lead_id   = None
             st.session_state.ai_draft         = ""
@@ -974,7 +978,7 @@ def tab_dial_queue():
             unsafe_allow_html=True,
         )
     with col_stop:
-        if st.button("■ STOP SESSION", use_container_width=True, key="btn_stop_session"):
+        if st.button("■ STOP SESSION", width="stretch", key="btn_stop_session"):
             if st.session_state.active_lead_id:
                 df = unlock_lead(df, st.session_state.active_lead_id)
                 save_leads(df)
@@ -1037,7 +1041,7 @@ def tab_dial_queue():
             )
 
             if phone:
-                st.link_button(f"📲 DIAL NOW — {phone}", tel_url, use_container_width=True)
+                st.link_button(f"📲 DIAL NOW — {phone}", tel_url, width="stretch")
                 st.caption("Opens your phone dialer with this number pre-loaded. Return here to log the outcome.")
             else:
                 st.warning("No phone number for this lead.")
@@ -1050,7 +1054,7 @@ def tab_dial_queue():
                                         index=STATUSES.index(status), key="call_status")
 
             save_disabled = (call_outcome == "— select —" or not call_notes.strip())
-            if st.button("✅ SAVE CALL & NEXT LEAD", use_container_width=True,
+            if st.button("✅ SAVE CALL & NEXT LEAD", width="stretch",
                          disabled=save_disabled, key="btn_save_call"):
                 df = load_leads()
                 df = advance_lead(df, lead_id, new_status, call_notes)
@@ -1073,7 +1077,7 @@ def tab_dial_queue():
                                      placeholder="e.g. Sent connection request", key="li_notes")
             lc1, lc2 = st.columns(2)
             with lc1:
-                if st.button("✅ OUTREACH DONE", use_container_width=True, key="btn_li_done"):
+                if st.button("✅ OUTREACH DONE", width="stretch", key="btn_li_done"):
                     df = load_leads()
                     df = advance_lead(df, lead_id, status, li_notes or "LinkedIn outreach done")
                     if save_leads(df):
@@ -1085,7 +1089,7 @@ def tab_dial_queue():
                         time.sleep(0.5)
                         st.rerun()
             with lc2:
-                if st.button("💬 RESPONSE RECEIVED", use_container_width=True, key="btn_li_resp"):
+                if st.button("💬 RESPONSE RECEIVED", width="stretch", key="btn_li_resp"):
                     df = load_leads()
                     df = advance_lead(df, lead_id, "Warm", li_notes or "LinkedIn response received")
                     if save_leads(df):
@@ -1122,7 +1126,7 @@ def tab_dial_queue():
 
                 ec1, ec2 = st.columns(2)
                 with ec1:
-                    if st.button("📤 SEND EMAIL", use_container_width=True, key="btn_send_email"):
+                    if st.button("📤 SEND EMAIL", width="stretch", key="btn_send_email"):
                         if not to_addr.strip():
                             st.error("To address required.")
                         else:
@@ -1143,7 +1147,7 @@ def tab_dial_queue():
                             else:
                                 st.error(f"Send failed: {msg}")
                 with ec2:
-                    if st.button("📝 LOG EMAIL MANUALLY", use_container_width=True, key="btn_log_email"):
+                    if st.button("📝 LOG EMAIL MANUALLY", width="stretch", key="btn_log_email"):
                         df = load_leads()
                         df = advance_lead(df, lead_id, status, f"Email logged: {subject}")
                         save_leads(df)
@@ -1158,26 +1162,26 @@ def tab_dial_queue():
             st.markdown(sl("MARK PRIOR EMAIL"), unsafe_allow_html=True)
             rb1, rb2 = st.columns(2)
             with rb1:
-                if st.button("↩ MARK REPLIED", use_container_width=True, key="btn_mark_replied"):
+                if st.button("↩ MARK REPLIED", width="stretch", key="btn_mark_replied"):
                     log_activity(lead_id, str(lead.get("ContactName", "")),
                                  "Email", "Replied", "Manual mark", "")
                     st.success("Replied logged.")
             with rb2:
-                if st.button("⛔ MARK BOUNCED", use_container_width=True, key="btn_mark_bounced"):
+                if st.button("⛔ MARK BOUNCED", width="stretch", key="btn_mark_bounced"):
                     log_activity(lead_id, str(lead.get("ContactName", "")),
                                  "Email", "Bounced", "Manual mark", "")
                     st.success("Bounce logged.")
 
         # Toggle email panel when on call/LinkedIn step
         if channel != "Email" and not st.session_state.email_panel_open:
-            if st.button("✉ ADD EMAIL THIS SESSION", use_container_width=True, key="btn_toggle_email"):
+            if st.button("✉ ADD EMAIL THIS SESSION", width="stretch", key="btn_toggle_email"):
                 st.session_state.email_panel_open = True
                 st.rerun()
 
         st.markdown("---")
         sk1, sk2 = st.columns(2)
         with sk1:
-            if st.button("⏭ SKIP THIS LEAD", use_container_width=True, key="btn_skip"):
+            if st.button("⏭ SKIP THIS LEAD", width="stretch", key="btn_skip"):
                 df = load_leads()
                 df = unlock_lead(df, lead_id)
                 save_leads(df)
@@ -1185,7 +1189,7 @@ def tab_dial_queue():
                 st.session_state.email_panel_open = False
                 st.rerun()
         with sk2:
-            if st.button("🚫 MARK DNC", use_container_width=True, key="btn_dnc"):
+            if st.button("🚫 MARK DNC", width="stretch", key="btn_dnc"):
                 df = load_leads()
                 df.loc[df["LeadID"] == lead_id, "Status"] = "DNC"
                 df = unlock_lead(df, lead_id)
@@ -1221,7 +1225,7 @@ def tab_dial_queue():
         company_enc = urllib.parse.quote_plus(str(lead.get("Company", "")))
         news_url    = f"https://www.google.com/search?q={company_enc}+news&tbm=nws"
         st.markdown(sl("RESEARCH"), unsafe_allow_html=True)
-        st.link_button("📰 COMPANY NEWS", news_url, use_container_width=True)
+        st.link_button("📰 COMPANY NEWS", news_url, width="stretch")
 
         notes_val = str(lead.get("Notes", "")).strip()
         if notes_val and notes_val != "nan":
@@ -1235,7 +1239,7 @@ def tab_dial_queue():
         if channel == "LinkedIn":
             st.markdown(sl("AI LINKEDIN DRAFT"), unsafe_allow_html=True)
             if not st.session_state.ai_draft:
-                if st.button("⚡ GENERATE LI DRAFT", use_container_width=True, key="btn_li_draft"):
+                if st.button("⚡ GENERATE LI DRAFT", width="stretch", key="btn_li_draft"):
                     with st.spinner("Drafting…"):
                         _, body = generate_ai_draft(lead, "linkedin")
                         st.session_state.ai_draft = body
@@ -1371,7 +1375,7 @@ def tab_analytics():
                 .pivot(index="Username", columns="Channel", values="n")
                 .fillna(0).astype(int)
             )
-            st.dataframe(pivot, use_container_width=True)
+            st.dataframe(pivot, width="stretch")
 
     with col_fn:
         st.markdown(sl("🔽 SEQUENCE FUNNEL"), unsafe_allow_html=True)
@@ -1488,7 +1492,7 @@ def tab_manage_leads():
 
                 preview_cols = [c for c in ["ContactName", "Company", "Title", "Phone", "Email", "Industry", "Status"]
                                 if c in mapped.columns]
-                st.dataframe(mapped[preview_cols].head(8), use_container_width=True)
+                st.dataframe(mapped[preview_cols].head(8), width="stretch")
 
                 ic1, ic2 = st.columns(2)
                 with ic1:
@@ -1502,7 +1506,7 @@ def tab_manage_leads():
                         mapped["SequenceStep"] > 0, default_step
                     )
 
-                if st.button("✅ CONFIRM IMPORT", use_container_width=True, key="btn_confirm_import"):
+                if st.button("✅ CONFIRM IMPORT", width="stretch", key="btn_confirm_import"):
                     if append_mode == "Append to existing" and not df.empty:
                         all_cols = list(set(df.columns.tolist() + mapped.columns.tolist()))
                         df_full  = df.reindex(columns=all_cols)
@@ -1541,7 +1545,7 @@ def tab_manage_leads():
                 key="new_step",
             )
 
-        if st.button("ADD LEAD", use_container_width=True, key="btn_add_lead"):
+        if st.button("ADD LEAD", width="stretch", key="btn_add_lead"):
             if not cn.strip() or not comp.strip():
                 st.error("Contact Name and Company are required.")
             else:
@@ -1593,7 +1597,7 @@ def tab_manage_leads():
         display_cols = [c for c in ["LeadID", "ContactName", "Company", "Industry",
                                      "Status", "SequenceStep", "LastTouched", "LockedBy"]
                         if c in v.columns]
-        st.dataframe(v[display_cols].sort_values("SequenceStep"), use_container_width=True, height=360)
+        st.dataframe(v[display_cols].sort_values("SequenceStep"), width="stretch", height=360)
         st.caption(f"{len(v)} leads shown · {len(df.columns)} columns preserved in sheet")
 
     # ── EDIT LEAD ─────────────────────────────────────────────
@@ -1615,7 +1619,7 @@ def tab_manage_leads():
             with ec2:
                 en = st.text_area("Notes", value=str(row.get("Notes", "")), height=100, key="edit_notes")
 
-            if st.button("💾 UPDATE LEAD", use_container_width=True, key="btn_update_lead"):
+            if st.button("💾 UPDATE LEAD", width="stretch", key="btn_update_lead"):
                 now_s = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
                 for col, val in [("Status", es), ("SequenceStep", ep), ("Notes", en),
                                   ("LastTouched", now_s), ("LastTouchedBy", st.session_state.username)]:
@@ -1682,7 +1686,7 @@ def tab_activity():
     show  = show.sort_values("Timestamp", ascending=False).head(300)
     dcols = [c for c in ["Timestamp", "Username", "ContactName", "Channel", "Outcome", "Action", "Notes"]
              if c in show.columns]
-    st.dataframe(show[dcols], use_container_width=True, height=500)
+    st.dataframe(show[dcols], width="stretch", height=500)
 
 
 # ─────────────────────────────────────────────
@@ -1704,7 +1708,7 @@ def tab_ai():
                             horizontal=True, key="ai_type")
         notes    = st.text_area("Context / Notes", height=80, key="ai_notes")
 
-    if st.button("⚡ GENERATE DRAFT", use_container_width=True, key="btn_ai_generate"):
+    if st.button("⚡ GENERATE DRAFT", width="stretch", key="btn_ai_generate"):
         if not contact or not company:
             st.error("Need at least a name and company.")
         else:
@@ -1741,9 +1745,9 @@ def login_screen():
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         st.markdown("**SELECT OPERATOR**")
-        name   = st.selectbox("", ["— choose —"] + TEAM_USERS, label_visibility="collapsed")
+        name = st.selectbox("Select Operator", ["— choose —"] + TEAM_USERS, label_visibility="collapsed")
         custom = st.text_input("Or enter your name", placeholder="Your name…")
-        if st.button("🔓 ENTER THE OPS FLOOR", use_container_width=True, key="btn_login"):
+        if st.button("🔓 ENTER THE OPS FLOOR", width="stretch", key="btn_login"):
             chosen = custom.strip() if custom.strip() else name
             if chosen and chosen != "— choose —":
                 st.session_state.username  = chosen
@@ -1769,7 +1773,7 @@ def render_sidebar():
             unsafe_allow_html=True,
         )
 
-        if st.button("⬅ Logout", use_container_width=True, key="btn_logout"):
+        if st.button("⬅ Logout", width="stretch", key="btn_logout"):
             if st.session_state.active_lead_id:
                 df = load_leads()
                 if not df.empty:
