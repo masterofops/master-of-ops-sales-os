@@ -381,21 +381,28 @@ def get_conn():
 conn = get_conn()
 
 
+def is_rate_limit_error(exc):
+    msg = str(exc)
+    return "429" in msg or "RESOURCE_EXHAUSTED" in msg or "quota" in msg.lower()
+
 def load_leads():
     try:
-        df = conn.read(worksheet=SHEET_LEADS, ttl=0)
+        df = conn.read(worksheet=SHEET_LEADS, ttl=60)
         if df is None or df.empty or "LeadID" not in df.columns:
             return pd.DataFrame(columns=CORE_LEAD_COLS)
         df["LeadID"]       = df["LeadID"].astype(str)
         df["SequenceStep"] = pd.to_numeric(df.get("SequenceStep", 1), errors="coerce").fillna(1).astype(int)
         df["Status"]       = df["Status"].fillna("Cold")
-        df["LastTouched"]  = pd.to_datetime(df["LastTouched"],  errors="coerce", utc=True)
-        df["LockTime"]     = pd.to_datetime(df["LockTime"],     errors="coerce", utc=True)
+        df["LastTouched"]  = pd.to_datetime(df["LastTouched"], errors="coerce", utc=True)
+        df["LockTime"]     = pd.to_datetime(df["LockTime"], errors="coerce", utc=True)
         df["LockedBy"]     = df["LockedBy"].fillna("")
         df["Notes"]        = df["Notes"].fillna("")
         return df
-    except Exception as e:
-        st.error(f"Leads load error: {e}")
+    except Exception as exc:
+        if is_rate_limit_error(exc):
+            st.info("Refreshing cached leads. Google Sheets quota is cooling down.")
+        else:
+            st.error(f"Leads load error: {exc}")
         return pd.DataFrame(columns=CORE_LEAD_COLS)
 
 
