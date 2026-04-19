@@ -1296,7 +1296,9 @@ def tab_activity():
 # ─────────────────────────────────────────────
 def tab_ai():
     st.markdown('<h2 style="color:#00A7A7;font-size:1.4rem;">🤖 AI MESSAGE WORKSHOP</h2>', unsafe_allow_html=True)
+
     st.caption("Draft messages for any lead standalone — outside the live queue.")
+    
    c1, c2 = st.columns(2)
 with c1:
     contact = st.text_input("Contact Name", key="ai_contact_name")
@@ -1311,6 +1313,7 @@ with c2:
         key="ai_type",
     )
     notes = st.text_area("Context", height=80, key="ai_context")
+    
     if st.button("⚡ GENERATE DRAFT",use_container_width=True):
         if not contact or not company: st.error("Need name and company.")
         else:
