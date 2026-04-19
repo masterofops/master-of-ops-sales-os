@@ -1183,16 +1183,25 @@ def tab_manage_leads():
     st.markdown("---")
 
     # ── ADD SINGLE LEAD ───────────────────────
-    with st.expander("➕ ADD SINGLE LEAD", expanded=False):
-        c1,c2,c3 = st.columns(3)
-        with c1:
-            cn=st.text_input("Contact Name *"); comp=st.text_input("Company *"); title=st.text_input("Title")
-        with c2:
-            phone=st.text_input("Phone"); email=st.text_input("Email"); ind=st.text_input("Industry")
-        with c3:
-            rev=st.text_input("Revenue"); status=st.selectbox("Status",STATUSES,key="ns")
-            step=st.selectbox("Start Step",[1,2,3,4,5,6,7],
-                              format_func=lambda x:f"Step {x}: {get_step_info(x)['label']}",key="nstep")
+with st.expander("➕ ADD SINGLE LEAD", expanded=False):
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        cn = st.text_input("Contact Name *", key="new_contact_name")
+        comp = st.text_input("Company *", key="new_company")
+        title = st.text_input("Title", key="new_title")
+    with c2:
+        phone = st.text_input("Phone", key="new_phone")
+        email = st.text_input("Email", key="new_email")
+        ind = st.text_input("Industry", key="new_industry")
+    with c3:
+        rev = st.text_input("Revenue", key="new_revenue")
+        status = st.selectbox("Status", STATUSES, key="new_status")
+        step = st.selectbox(
+            "Start Step",
+            [1, 2, 3, 4, 5, 6, 7],
+            format_func=lambda x: f"Step {x}: {get_step_info(x)['label']}",
+            key="new_step",
+        )
 
         if st.button("ADD LEAD", use_container_width=True):
             if not cn.strip() or not comp.strip():
@@ -1288,10 +1297,20 @@ def tab_activity():
 def tab_ai():
     st.markdown('<h2 style="color:#00A7A7;font-size:1.4rem;">🤖 AI MESSAGE WORKSHOP</h2>', unsafe_allow_html=True)
     st.caption("Draft messages for any lead standalone — outside the live queue.")
-    c1,c2 = st.columns(2)
-    with c1: contact=st.text_input("Contact Name"); company=st.text_input("Company"); industry=st.text_input("Industry")
-    with c2: revenue=st.text_input("Revenue"); mtype=st.radio("Type",["Follow-up Email","LinkedIn Message"],horizontal=True); notes=st.text_area("Context",height=80)
-
+   c1, c2 = st.columns(2)
+with c1:
+    contact = st.text_input("Contact Name", key="ai_contact_name")
+    company = st.text_input("Company", key="ai_company")
+    industry = st.text_input("Industry", key="ai_industry")
+with c2:
+    revenue = st.text_input("Revenue", key="ai_revenue")
+    mtype = st.radio(
+        "Type",
+        ["Follow-up Email", "LinkedIn Message"],
+        horizontal=True,
+        key="ai_type",
+    )
+    notes = st.text_area("Context", height=80, key="ai_context")
     if st.button("⚡ GENERATE DRAFT",use_container_width=True):
         if not contact or not company: st.error("Need name and company.")
         else:
