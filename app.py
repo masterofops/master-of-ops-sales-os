@@ -1295,29 +1295,38 @@ def tab_activity():
 #  TAB: AI WORKSHOP
 # ─────────────────────────────────────────────
 def tab_ai():
-    st.markdown('<h2 style="color:#00A7A7;font-size:1.4rem;">🤖 AI MESSAGE WORKSHOP</h2>', unsafe_allow_html=True)
-
-    st.caption("Draft messages for any lead standalone — outside the live queue.")
-    
-   c1, c2 = st.columns(2)
-with c1:
-    contact = st.text_input("Contact Name", key="ai_contact_name")
-    company = st.text_input("Company", key="ai_company")
-    industry = st.text_input("Industry", key="ai_industry")
-with c2:
-    revenue = st.text_input("Revenue", key="ai_revenue")
-    mtype = st.radio(
-        "Type",
-        ["Follow-up Email", "LinkedIn Message"],
-        horizontal=True,
-        key="ai_type",
+    st.markdown(
+        '<h2 style="color:#00A7A7;font-size:1.4rem;">🤖 AI MESSAGE WORKSHOP</h2>',
+        unsafe_allow_html=True,
     )
-    notes = st.text_area("Context", height=80, key="ai_context")
-    
-    if st.button("⚡ GENERATE DRAFT",use_container_width=True):
-        if not contact or not company: st.error("Need name and company.")
+    st.caption("Draft messages for any lead standalone — outside the live queue.")
+
+    c1, c2 = st.columns(2)
+    with c1:
+        contact = st.text_input("Contact Name", key="ai_contact_name")
+        company = st.text_input("Company", key="ai_company")
+        industry = st.text_input("Industry", key="ai_industry")
+    with c2:
+        revenue = st.text_input("Revenue", key="ai_revenue")
+        mtype = st.radio(
+            "Type",
+            ["Follow-up Email", "LinkedIn Message"],
+            horizontal=True,
+            key="ai_type",
+        )
+        notes = st.text_area("Context", height=80, key="ai_context")
+
+    if st.button("⚡ GENERATE DRAFT", use_container_width=True):
+        if not contact or not company:
+            st.error("Need name and company.")
         else:
-            row={"ContactName":contact,"Company":company,"Industry":industry,"Revenue":revenue,"Notes":notes}
+            row = {
+                "ContactName": contact,
+                "Company": company,
+                "Industry": industry,
+                "Revenue": revenue,
+                "Notes": notes,
+            }
             with st.spinner("Drafting…"):
                 dtype = "email" if "Email" in mtype else "linkedin"
                 subj, body = generate_ai_draft(row, dtype)
@@ -1325,8 +1334,10 @@ with c2:
                 st.markdown(sl("SUBJECT"), unsafe_allow_html=True)
                 st.code(subj)
             st.markdown(sl("BODY"), unsafe_allow_html=True)
-            st.markdown(f'<div class="op-card" style="border-color:var(--teal);font-size:.9rem;white-space:pre-wrap;">{body}</div>', unsafe_allow_html=True)
-
+            st.markdown(
+                f'<div class="op-card" style="border-color:var(--teal);font-size:.9rem;white-space:pre-wrap;">{body}</div>',
+                unsafe_allow_html=True,
+            )
 # ─────────────────────────────────────────────
 #  TAB: SETUP
 # ─────────────────────────────────────────────
