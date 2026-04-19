@@ -198,14 +198,25 @@ h1, h2, h3 {
     text-transform: uppercase !important; border-radius: var(--radius) !important;
     padding: .4rem 1rem !important;
 }
-.stButton > button:hover { background: var(--teal-dim) !important; }
 .stLinkButton a {
-    background: var(--panel) !important; color: var(--teal) !important;
+    background: #0F1720 !important;
+    color: #EAF6F6 !important;
     border: 1px solid var(--teal) !important;
-    font-family: 'Barlow Condensed', sans-serif !important; font-weight: 700 !important;
-    font-size: .8rem !important; letter-spacing: .08em !important;
-    text-transform: uppercase !important; border-radius: var(--radius) !important;
+    font-family: 'Barlow Condensed', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: .8rem !important;
+    letter-spacing: .08em !important;
+    text-transform: uppercase !important;
+    border-radius: var(--radius) !important;
     padding: .3rem .9rem !important;
+}
+
+.stLinkButton a:hover {
+    background: #16303A !important;
+    color: #FFFFFF !important;
+    border-color: #22C7C7 !important;
+}
+
 }
 
 [data-baseweb="tab-list"] {
