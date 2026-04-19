@@ -570,7 +570,8 @@ def step_indicator(current_step):
         cls = "done" if n<current_step else ("active" if n==current_step else "")
         icons = {"Call":"📞","Email":"✉️","LinkedIn":"🔗"}
         icon  = icons.get(s["channel"],"·")
-        parts.append(f'<div class="step-dot {cls}" title="Step {n}: {s[\"label\"]}">{icon}</div>')
+        label = s["label"]
+        parts.append(f'<div class="step-dot {cls}" title="Step {n}: {label}">{icon}</div>')
         if n < 7: parts.append('<div class="step-line"></div>')
     st.markdown(f'<div class="step-bar">{"".join(parts)}</div>', unsafe_allow_html=True)
 
