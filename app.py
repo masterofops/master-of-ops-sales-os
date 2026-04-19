@@ -552,8 +552,9 @@ def map_import_df(raw_df):
 # ─────────────────────────────────────────────
 #  UI HELPERS
 # ─────────────────────────────────────────────
-def sl(txt): return f'<div class="section-label">{txt}</div>'
-
+def sl(txt): 
+    return f'<div class="section-label">{txt}</div>'
+    
 def status_badge(status):
     cls = {"Cold":"badge-cold","Warm":"badge-warm","Hot":"badge-hot","DNC":"badge-dnc"}.get(status,"badge-cold")
     return f'<span class="badge {cls}">{status}</span>'
