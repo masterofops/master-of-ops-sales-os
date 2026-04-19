@@ -185,10 +185,9 @@ h1, h2, h3 {
 .stSelectbox div[data-baseweb="select"] {
     background: var(--surface) !important; border: 1px solid var(--border) !important;
 }
-.stSelectbox div[data-baseweb="select"] * { color: var(--text) !important; }
-.stMultiSelect div[data-baseweb="select"] {
-    background: var(--surface) !important; border: 1px solid var(--border) !important;
-}
+.stSelectbox div[data-baseweb="select"] * { color: #000000 !important; }
+.stMultiSelect div[data-baseweb="select"] * { color: #000000 !important; }
+
 .stMultiSelect div[data-baseweb="select"] * { color: var(--text) !important; }
 
 .stButton > button {
